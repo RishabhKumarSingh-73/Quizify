@@ -1,6 +1,17 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from quiz_generator import generate_questions
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], 
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class Question(BaseModel):
     topic:str
@@ -8,7 +19,6 @@ class Question(BaseModel):
     difficulty:str
     param:str
 
-app = FastAPI()
 
 @app.post('/getQuiz')
 async def get_overall_quiz(request:Question):
